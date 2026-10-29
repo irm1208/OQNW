@@ -1,5 +1,6 @@
 import { db } from "@workspace/db";
 import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
+import { and, eq } from "drizzle-orm";
 
 // Individual-vial prices supplied in the OmniUK price sheet (February 2026).
 // Products not listed in that sheet retain their catalog price.
@@ -121,10 +122,25 @@ const seedData = [
   { id: 82, slug: "tesamorelin-20mg",                     name: "Tesamorelin 20mg",                      category: "Growth Hormone",        priceGbp: "240", imageUrl: "/products/82.jpg", purity: "99%+",  casNumber: "218949-48-5", storage: "Store lyophilized at -20°C. After reconstitution, store at 4°C for up to 2 weeks.", appearance: "White lyophilized powder", shortDescription: "A stabilised GHRH(1-44) analogue with trans-3-hexenoic acid modification, studied for pulsatile GH secretion, visceral fat reduction, and body composition research.", description: "Tesamorelin (TH9507) is a stabilised synthetic analogue of human GHRH(1-44) studied for pituitary GH axis stimulation, visceral adiposity reduction, and lipodystrophy-related metabolic research." },
   { id: 83, slug: "5-amino-1q-50mg",                      name: "5-Amino-1MQ 50mg",                       category: "Cellular Health",        priceGbp: "95",  imageUrl: "/products/83.jpg", purity: "99%+",  casNumber: "42464-96-0", storage: "Store at room temperature away from light and moisture.", appearance: "Reddish-orange powder", shortDescription: "5-Amino-1MQ is a selective NNMT inhibitor studied for metabolic regulation, fat mass reduction, NAD⁺ metabolism, and cellular energy homeostasis.", description: "5-Amino-1MQ (5-Amino-1-methylquinolinium) is a selective, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT) studied for its role in adipogenesis, metabolic disease, and NAD⁺ pathway regulation." },
   { id: 85, slug: "cjc-1295-no-dac-ipamorelin-5mg",          name: "CJC-1295 No DAC + Ipamorelin 5mg",      category: "Growth Hormone",        priceGbp: "95",  imageUrl: "/products/85.jpg", purity: "99%+ (each component)", casNumber: "863288-34-0 / 170851-70-4", alsoKnownAs: "Modified GRF 1-29 + Ipamorelin Blend, mGRF(1-29) + IPA Blend", storage: "Store lyophilized blend at -20°C. After reconstitution store at 4°C for up to 2 weeks.", appearance: "White lyophilized powder", shortDescription: "A dual-peptide blend combining CJC-1295 No DAC (5mg, GHRH analogue) and Ipamorelin (5mg, selective GHSR agonist) for synergistic GH secretion research via complementary receptor pathways.", description: "CJC-1295 No DAC + Ipamorelin Blend combines a GHRH receptor agonist with a selective ghrelin receptor agonist to study synergistic pulsatile GH release, body composition, and growth hormone axis physiology." },
-  { id: 84, slug: "ara-290-16mg",                         name: "ARA-290 16mg",                          category: "Research Peptides",      priceGbp: "120", imageUrl: "/products/84.jpg", purity: "99%+",  casNumber: "506-32-1", alsoKnownAs: "Cibinetide, ARA290", storage: "Store lyophilized at -20°C. After reconstitution store at 4°C for up to 2 weeks.", appearance: "White lyophilized powder", solubility: "Soluble in sterile water or bacteriostatic water", formula: "C₂₀H₃₂O₂", molecularWeight: "304.47 g/mol", shortDescription: "ARA-290 (Cibinetide) is a selective innate repair receptor (IRR/EPOR-βcR) agonist studied for neuroprotection, small fiber neuropathy, anti-inflammatory activity, and tissue repair without erythropoietic effects.", description: "ARA-290 (Cibinetide) is a synthetic peptide ligand of the innate repair receptor studied for neuroprotection, small fiber neuropathy regeneration, sarcoidosis-associated nerve damage, and anti-inflammatory tissue protection without the hematopoietic activity of erythropoietin." },
+  { id: 84, slug: "ara-290-16mg",                         name: "ARA-290 16mg",                          category: "Research Peptides",      priceGbp: "120", imageUrl: "/products/84.jpg", purity: "99%+",  casNumber: "1208243-50-8", alsoKnownAs: "Cibinetide, ARA290", storage: "Store lyophilized at -20°C. After reconstitution store at 4°C for up to 2 weeks.", appearance: "White lyophilized powder", solubility: "Soluble in sterile water or bacteriostatic water", formula: "C₅₁H₈₄N₁₆O₂₁", molecularWeight: "1257.3 g/mol", shortDescription: "ARA-290 (Cibinetide) is a selective innate repair receptor (IRR/EPOR-βcR) agonist studied for neuroprotection, small fiber neuropathy, anti-inflammatory activity, and tissue repair without erythropoietic effects.", description: "ARA-290 (Cibinetide) is a synthetic peptide ligand of the innate repair receptor studied for neuroprotection, small fiber neuropathy regeneration, sarcoidosis-associated nerve damage, and anti-inflammatory tissue protection without the hematopoietic activity of erythropoietin." },
   { id: 86, slug: "bacteriostatic-water-30ml",            name: "Bacteriostatic Water 30ml Vial",      category: "Accessories",           priceGbp: "11.99", imageUrl: "/bac-water-30ml.webp", shortDescription: "30ml bacteriostatic water (0.9% benzyl alcohol) for peptide reconstitution. Pharmaceutical grade, endotoxin tested.", description: "Bacteriostatic Water 30ml Vial — sterile water preserved with 0.9% benzyl alcohol. Suitable for reconstituting lyophilised peptides. Pharmaceutical grade, endotoxin tested and sterile-filtered. For research use only." },
   { id: 87, slug: "bacteriostatic-water-10ml",            name: "Bacteriostatic Water 10ml Ampule",      category: "Accessories",           priceGbp: "8.99", imageUrl: "/bac-water-10ml.png", shortDescription: "10ml bacteriostatic water (0.9% benzyl alcohol) for peptide reconstitution. Pharmaceutical grade, endotoxin tested.", description: "Bacteriostatic Water 10ml Ampule — sterile water preserved with 0.9% benzyl alcohol. Suitable for reconstituting lyophilised peptides. Pharmaceutical grade, endotoxin tested and sterile-filtered. For research use only." },
 ];
+
+/**
+ * ARA-290 (Cibinetide) was catalogued with arachidonic acid's identifiers
+ * (CAS 506-32-1, C20H32O2, 304.47 g/mol). Seeding never overwrites existing
+ * rows, so this corrects the stored row once. It only matches the wrong CAS,
+ * so a later admin edit is never overwritten.
+ */
+async function correctAra290Identifiers() {
+  const fixed = await db
+    .update(productsCatalogTable)
+    .set({ casNumber: "1208243-50-8", formula: "C₅₁H₈₄N₁₆O₂₁", molecularWeight: "1257.3 g/mol" })
+    .where(and(eq(productsCatalogTable.slug, "ara-290-16mg"), eq(productsCatalogTable.casNumber, "506-32-1")))
+    .returning({ id: productsCatalogTable.id });
+  if (fixed.length) console.info("Corrected ARA-290 CAS, formula and molecular weight");
+}
 
 export async function seedProductsCatalog() {
   try {
@@ -185,6 +201,7 @@ export async function seedProductsCatalog() {
       }
     }
 
+    await correctAra290Identifiers();
     return { seeded: true, count: seeded, updated };
   } catch (err) {
     console.error("Failed to seed products catalog:", err);

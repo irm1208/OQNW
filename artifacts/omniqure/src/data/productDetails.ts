@@ -1833,9 +1833,9 @@ Research into the somatopause — the age-related decline in GH pulse amplitude 
   "84": {
     id: "84",
     refNumber: "026-43-AR",
-    casNumber: "506-32-1",
-    formula: "C₂₀H₃₂O₂",
-    molecularWeight: "304.47 g/mol",
+    casNumber: "1208243-50-8",
+    formula: "C₅₁H₈₄N₁₆O₂₁",
+    molecularWeight: "1257.3 g/mol",
     purity: "98%+",
     alsoKnownAs: "Cibinetide, ARA290",
     storage: "Store lyophilized at -20°C. After reconstitution store at 4°C for up to 2 weeks.",

@@ -25,7 +25,8 @@ const PUBMED_NAMES: Record<string, string[]> = {
   "Melanotan 2": ["Melanotan II"],
 };
 // PubChem lookups that must skip the catalogue's CAS number. ARA-290's is
-// stored as 506-32-1, which is arachidonic acid (Cibinetide is 1208243-50-8).
+// stored as 506-32-1 (arachidonic acid) until the startup correction in
+// api-server seed-catalog.ts; Cibinetide is 1208243-50-8.
 const PUBCHEM_LOOKUP: Record<string, string[]> = {
   "ARA-290": ["Cibinetide", "ARA290"],
 };
