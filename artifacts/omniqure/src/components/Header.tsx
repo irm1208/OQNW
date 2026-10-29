@@ -833,7 +833,7 @@ export default function Header() {
                   onMouseDown={() => { navigate("/all-peptides"); setOpen(false); setSearchQuery(""); }}
                   style={{ fontSize: "12px", fontWeight: 600, color: "#4E68C2", background: "none", border: "none", cursor: "pointer" }}
                 >
-                  Browse all 81 peptides →
+                  Browse all peptides →
                 </button>
               </div>
             )}

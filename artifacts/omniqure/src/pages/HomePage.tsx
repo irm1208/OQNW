@@ -9,7 +9,7 @@ import FeaturedRangeSection from "@/components/home/FeaturedRangeSection";
 import ProductCategoriesSection from "@/components/home/ProductCategoriesSection";
 import {
   WhySection, BestSellersSection, BundleBanner, QualitySection,
-  FaqSection, ReviewsSection, MissionSection, HowItWorksSection, ClosingCtaSection,
+  FaqSection, MissionSection, ClosingCtaSection,
 } from "@/components/home/HomeSections";
 const HOME_FAQ: { q: string; a: string }[] = [
               {
@@ -78,7 +78,7 @@ export default function HomePage() {
   const { products, loading } = useProducts();
   useSEO({
     title: "Verified Research Peptides",
-    description: "Buy high-purity research peptides with independent results confirming 99%+ purity. BPC-157, TB-500, Ipamorelin, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    description: "Buy high-purity research peptides with independent results confirming 99%+ purity. BPC-157, TB-500, Ipamorelin, Epithalon and 40+ more compounds. Worldwide shipping from OmniQure.",
     canonicalPath: "/",
   });
 
@@ -119,11 +119,8 @@ export default function HomePage() {
         </div>
       </BestSellersSection>
 
-      {/* 4. Brand pillars: tested, documented, delivered */}
+      {/* 4. Brand pillars: tested, documented, delivered (also covers how an order works) */}
       <WhySection />
-
-      {/* 5. How it works */}
-      <HowItWorksSection />
 
       {/* 6. Shop by range */}
       <ProductCategoriesSection />
@@ -134,8 +131,8 @@ export default function HomePage() {
       {/* 8. The people behind it */}
       <MissionSection />
 
-      {/* 9. Social proof */}
-      <ReviewsSection />
+      {/* Reviews are off until they link to a live Trustpilot profile: the old
+          4.9 rating and quotes could not be traced to any published review. */}
 
       {/* 10. Questions */}
       <FaqSection items={HOME_FAQ} />

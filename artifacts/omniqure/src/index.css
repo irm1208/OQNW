@@ -3197,6 +3197,9 @@ body.has-cart-preview-bar main {
 .hero-slide { position: relative; background: #fff; }
 .hero-slide__media { position: relative; overflow: hidden; background: #F2F0EB; }
 .hero-slide__media img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+/* Phones: cap the photo so the headline and Shop button sit on the first screen. */
+@media (max-width: 639px) { .hero-slide__media img { max-height: 46vh; max-height: 46svh; } }
+@media (max-width: 639px) and (max-height: 600px) { .hero-slide__media img { max-height: 38vh; max-height: 38svh; } }
 @media (min-width: 640px) { .hero-slide__media img { aspect-ratio: 4 / 3; } }
 
 .hero-slide__copy { padding: 20px 20px 4px; }

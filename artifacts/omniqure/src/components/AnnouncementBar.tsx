@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { X } from "lucide-react";
+import { useProducts } from "@/context/ProductsContext";
+import { groupProducts } from "@/data/groupedProducts";
+import { isHiddenCategory } from "@/data/products";
+import { isBacWaterProduct } from "@/data/bacWaterProducts";
 
-const messages = [
+const MESSAGES = [
   "99%+ independently verified purity",
   "Free standard UK shipping",
   "Bundle & save — free 10ml bac water with 3+ vials",
   "Same-day dispatch, Mon–Fri",
-  "135 research peptides in stock",
 ];
 
 export default function AnnouncementBar({ suppressed = false }: { suppressed?: boolean }) {
   const [visible, setVisible] = useState(true);
+  const { products } = useProducts();
+  // Count compounds from the live catalogue, as the catalogue page groups them.
+  const compounds = useMemo(
+    () => groupProducts(products.filter(p => !isHiddenCategory(p.category) && !isBacWaterProduct(p) && p.stockLevel !== 0)).length,
+    [products],
+  );
+  const messages = compounds > 0 ? [...MESSAGES, `${compounds} research compounds in stock`] : MESSAGES;
   if (!visible || suppressed) return null;
 
   const doubled = [...messages, ...messages];

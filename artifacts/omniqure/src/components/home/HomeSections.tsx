@@ -205,7 +205,7 @@ export function QualitySection() {
 /* ── 4. Process: three connected steps ─────────────────────────── */
 /* ── How it works: four steps from order to verified vial ───────────────── */
 const STEPS = [
-  { title: "Choose your compounds", body: "135 peptides across repair, growth, metabolic, cognitive and longevity ranges. Mix freely." },
+  { title: "Choose your compounds", body: "40+ compounds across repair, growth, metabolic, cognitive and longevity ranges. Mix freely." },
   { title: "We test and document", body: "Each batch goes to Janoshik for HPLC and mass-spec. The report is published before the batch is sold." },
   { title: "Dispatched the same day", body: "Order before 12:00 on a working day and it ships that day, tracked and free across the UK." },
   { title: "Verify it yourself", body: "Scan the QR on the vial or open the product page to check the lot against its lab report." },
@@ -279,7 +279,7 @@ export function InstitutionalSection() {
                 <Building2 size={15} style={{ color: "var(--graphite)" }} />
                 <Link href="/lab-reports" className="transition-colors hover:text-[var(--ink)]" style={{ fontSize: 13, color: "var(--graphite)" }}>Browse lab reports</Link>
               </div>
-              <p style={{ fontSize: 12, color: "var(--graphite)" }}>We aim to reply within 24 hours on business days.</p>
+              <p style={{ fontSize: 12, color: "var(--graphite)" }}>Wholesale enquiries answered within two business days.</p>
             </div>
           </div>
         </div>
@@ -487,7 +487,7 @@ const PROMISES = [
   "Publish every Janoshik report, with no selective disclosure",
   "Retest any batch that falls below our purity threshold",
   "Never overstate claims beyond peer-reviewed data",
-  "Answer support queries within 1–2 business days",
+  "Answer support queries within one business day",
 ];
 
 export function MissionSection() {

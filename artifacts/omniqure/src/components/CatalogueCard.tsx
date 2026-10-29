@@ -5,6 +5,7 @@ import { parseName, type GroupedProduct } from "@/data/groupedProducts";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCart } from "@/context/CartContext";
 import { studioFallback, STUDIO_BG } from "@/lib/studioImage";
+import { getVialImage } from "@/lib/catalogueImages";
 import { rangeColourForCategory } from "@/lib/rangeColour";
 
 /*
@@ -38,7 +39,7 @@ export default function CatalogueCard({ group }: { group: GroupedProduct }) {
     <article className="ccard" style={{ "--range": rangeColourForCategory(group.category) } as React.CSSProperties}>
       <Link href={href} className="ccard__media" style={{ background: STUDIO_BG }} tabIndex={-1} aria-hidden="true">
         <img
-          src={group.image}
+          src={getVialImage(variant.slug) ?? group.image}
           onError={studioFallback(group.cardImage || group.image)}
           alt=""
           loading="lazy"

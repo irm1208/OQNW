@@ -64,7 +64,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
       "TB-500 provides systemic stem cell mobilisation and cellular migration support",
       "Complementary mechanisms: local cytoprotection + systemic extracellular matrix reorganisation",
       "Preclinical studies suggest additive or synergistic effects vs. either peptide alone",
-      "Single-vial format simplifies multi-compound research dosing protocols",
+      "Single-vial format simplifies multi-compound study set-up",
     ],
     sideEffects: [
       "See individual compound profiles for BPC-157 and TB-500",
@@ -156,7 +156,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
       "Relatively little preclinical toxicology data compared to other peptides",
       "Sedative effects may interfere with activity measurements in research animals",
       "Potential for neuroendocrine disruption at supraphysiological doses",
-      "Half-life is very short (~2 min) requiring careful dosing protocol design",
+      "Very short half-life (about 2 minutes), which shapes experimental design",
     ],
   },
 
@@ -454,7 +454,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
       "Investigated for anti-cancer properties through induction of apoptosis in tumour cell lines",
     ],
     sideEffects: [
-      "Cytotoxic to mammalian cells at higher concentrations — research dosing must be controlled",
+      "Cytotoxic to mammalian cells at higher concentrations, so concentrations must be controlled",
       "Pro-inflammatory at elevated doses — may exacerbate inflammation in certain models",
       "Haemolytic activity observed at supra-therapeutic concentrations",
       "Some research models show promotion of tumour angiogenesis — context-dependent effects",
@@ -688,7 +688,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
       "Published research data shows superior body weight reduction versus dual agonists in preclinical and escalation models",
       "Additive metabolic benefits: appetite suppression (GLP-1/GIP) + energy expenditure (glucagon)",
       "Investigated for NAFLD reversal via hepatic lipid reduction in animal models",
-      "Weekly dosing format studied in preclinical models with potent, durable effects",
+      "Long half-life, with potent and durable effects reported in preclinical models",
     ],
     sideEffects: [
       "GI effects (nausea, vomiting, diarrhoea) consistent with incretin receptor activation",
@@ -923,7 +923,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
       "Produces greater weight loss than semaglutide in head-to-head preclinical comparisons",
       "GIP agonism potentiates insulin secretion and reduces glucagon — complementary to GLP-1 pathway",
       "Reduces HbA1c, body weight, blood pressure, and triglycerides in metabolic research models",
-      "Weekly dosing (fatty acid modification) with durable effects in animal studies",
+      "Fatty acid modification extends half-life, with durable effects in animal studies",
     ],
     sideEffects: [
       "GI effects (nausea, vomiting, diarrhoea, constipation) typical of incretin class compounds",

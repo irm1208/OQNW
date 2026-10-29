@@ -165,7 +165,7 @@ Preclinical research has consistently shown BPC-157's ability to accelerate tiss
     description: `BPC-157 40mg is an extra-large format vial of the cytoprotective pentadecapeptide, designed for high-volume research applications. Identical compound to smaller vials with the same purity and scientific properties.`,
     longDescription: `What is BPC-157?
 
-BPC-157 40mg provides a high-quantity format of Body Protection Compound 157 for extensive research protocols. The 40mg vial is ideal for studies requiring multiple dosing cohorts or longer treatment durations. All chemical properties, purity standards, and research profiles are identical to smaller vial sizes, with the same lyophilized powder format ensuring long-term stability when stored correctly.`
+BPC-157 40mg provides a high-quantity format of Body Protection Compound 157 for extensive research protocols. The 40mg vial suits larger or longer in-vitro studies. All chemical properties, purity standards, and research profiles are identical to smaller vial sizes, with the same lyophilized powder format ensuring long-term stability when stored correctly.`
   },
 
   "7": {
@@ -230,7 +230,7 @@ Preclinical studies in models of tendon injury, muscle damage, and wound healing
     description: `Cagrilintide 5mg is a long-acting amylin analogue investigated for its role in appetite suppression, gastric emptying modulation, and weight management. Research explores its potential synergy with GLP-1 receptor agonists in metabolic disorder models.`,
     longDescription: `What is Cagrilintide?
 
-Cagrilintide (AM833, NN9838) is a long-acting amylin analogue developed for research into obesity and metabolic disorders. Amylin is a peptide hormone co-secreted with insulin from pancreatic beta cells that plays a key role in regulating satiety, gastric emptying, and postprandial glucagon secretion. Cagrilintide is engineered with fatty acid modifications to extend its half-life to approximately 7 days, enabling once-weekly dosing in research models.
+Cagrilintide (AM833, NN9838) is a long-acting amylin analogue developed for research into obesity and metabolic disorders. Amylin is a peptide hormone co-secreted with insulin from pancreatic beta cells that plays a key role in regulating satiety, gastric emptying, and postprandial glucagon secretion. Cagrilintide is engineered with fatty acid modifications to extend its half-life to approximately 7 days.
 
 Cagrilintide Research
 
@@ -1254,7 +1254,7 @@ Weight management research positions Retatrutide as potentially the most potent 
     description: `Retatrutide 20mg is a larger vial of the triple GLP-1/GIP/glucagon receptor agonist for extended metabolic, obesity, and weight management research protocols.`,
     longDescription: `What is Retatrutide?
 
-Retatrutide (LY3437943) is a triple receptor agonist of GLP-1R, GIPR, and GCGR, with fatty acid modification enabling weekly dosing research. The 20mg format supports extended study protocols. Research documents exceptional weight loss potential through combined appetite suppression, enhanced insulin secretion, thermogenesis, and hepatic fat mobilization, positioning it among the most investigated next-generation metabolic peptides.`
+Retatrutide (LY3437943) is a triple receptor agonist of GLP-1R, GIPR, and GCGR, with a fatty acid modification that extends its half-life. The 20mg format supports larger studies. Published research has examined its combined effects on appetite signalling, insulin secretion, energy expenditure and hepatic fat, making it one of the most studied next-generation metabolic peptides.`
   },
 
   "58": {
@@ -1270,7 +1270,7 @@ Retatrutide (LY3437943) is a triple receptor agonist of GLP-1R, GIPR, and GCGR, 
     description: `Retatrutide 30mg is a triple GLP-1/GIP/glucagon receptor agonist vial supporting high-volume obesity and metabolic research programs.`,
     longDescription: `What is Retatrutide?
 
-Retatrutide 30mg provides a high-quantity format of this triple receptor agonist. Research in obesity, metabolic disorders, and weight management benefits from larger quantities for multi-cohort studies. All properties are identical to smaller vials: GLP-1R, GIPR, and GCGR triple agonism with ~6-day half-life enabling weekly research dosing protocols.`
+Retatrutide 30mg provides a high-quantity format of this triple receptor agonist. The larger quantity suits multi-arm in-vitro studies. All properties are identical to smaller vials: GLP-1R, GIPR and GCGR triple agonism, with a reported half-life of about six days.`
   },
 
   "59": {
@@ -1649,7 +1649,7 @@ Vaccine adjuvant research investigates TA-1's ability to enhance antibody titers
     appearance: "White lyophilized powder",
     halfLife: "Approximately 5 days (fatty acid conjugation)",
     researchAreas: ["Obesity Research", "Type 2 Diabetes Research", "Metabolic Research", "GLP-1 Research", "GIP Research"],
-    description: `Tirzepatide (LY3298176) is a dual GIP/GLP-1 receptor agonist with a fatty acid-modified structure enabling weekly dosing. Investigated for type 2 diabetes glycemic control, obesity, and metabolic disorder research, it demonstrates superior weight loss compared to selective GLP-1 agonists.`,
+    description: `Tirzepatide (LY3298176) is a dual GIP/GLP-1 receptor agonist with a fatty acid-modified structure that extends its half-life. It has been studied in type 2 diabetes, obesity and metabolic research, where published trials report greater weight reduction than selective GLP-1 agonists.`,
     longDescription: `What is Tirzepatide?
 
 Tirzepatide (LY3298176) is a synthetic 39-amino acid peptide that acts as a dual agonist of the glucose-dependent insulinotropic polypeptide receptor (GIPR) and the glucagon-like peptide-1 receptor (GLP-1R). It is based on a native GIP sequence with modifications including substitution of selected amino acids with Aib (alpha-aminoisobutyric acid) for stability and a C18 fatty diacid attached via a linker to lysine-26 for albumin binding and extended half-life.
@@ -1674,7 +1674,7 @@ Metabolic research investigates Tirzepatide's effects on liver fat content (NAFL
     storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 4 weeks.",
     halfLife: "Approximately 5 days",
     researchAreas: ["Obesity Research", "Type 2 Diabetes Research", "Metabolic Research"],
-    description: `Tirzepatide 15mg is a dual GIP/GLP-1 receptor agonist for extended obesity, diabetes, and metabolic research protocols. Identical compound to 10mg vial with larger quantity for multi-dosing or longer study designs.`,
+    description: `Tirzepatide 15mg is a dual GIP/GLP-1 receptor agonist for extended obesity, diabetes, and metabolic research protocols. Identical compound to the 10mg vial, in a larger quantity for larger or longer studies.`,
     longDescription: `What is Tirzepatide?
 
 Tirzepatide 15mg provides an extended supply of this dual GIP/GLP-1 receptor agonist. Research applications are identical to smaller vials: glycemic control via dual incretin activation, exceptional weight reduction in obesity models (15–22% body weight in clinical studies), liver fat reduction, metabolic marker improvement, and investigation of GIPR versus GLP-1R contribution to observed effects.`
@@ -1709,7 +1709,7 @@ Tirzepatide 30mg supports large-scale or multi-cohort research requiring substan
     description: `Tirzepatide 45mg is a high-volume vial of the dual GIP/GLP-1 receptor agonist for large-scale metabolic and obesity research investigations.`,
     longDescription: `What is Tirzepatide?
 
-Tirzepatide 45mg provides high-volume supply of this dual incretin receptor agonist. All scientific properties are identical to other Tirzepatide vials. The 45mg format accommodates large animal study cohorts, extended dosing protocols, or parallel experimental conditions in obesity, type 2 diabetes, and metabolic research.`
+Tirzepatide 45mg provides high-volume supply of this dual incretin receptor agonist. All scientific properties are identical to other Tirzepatide vials. The 45mg format suits larger studies or parallel experimental conditions in obesity, type 2 diabetes and metabolic research.`
   },
 
   "80": {

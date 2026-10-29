@@ -51,7 +51,7 @@ export default function AllPeptides() {
     : "All Research Peptides";
   const seoDesc = searchQuery.trim()
     ? `Showing research peptides matching "${searchQuery.trim()}" — independent results confirm 99%+ purity from OmniQure.`
-    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ verified research peptides from OmniQure. BPC-157, TB-500, Ipamorelin and more.";
+    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 40+ verified research compounds from OmniQure. BPC-157, TB-500, Ipamorelin and more.";
   useSEO({ title: seoTitle, description: seoDesc, canonicalPath: "/all-peptides" });
 
   useEffect(() => {

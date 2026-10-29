@@ -118,7 +118,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/contact|email|support|help|speak to|talk to|human/i],
     answer:
-      "You can reach our team at **support@omniqure.com**. We aim to respond within 24 hours on business days (Monday–Friday, UK hours). For urgent queries, include your order number in the subject line.",
+      "You can reach our team at **support@omniqure.com**. We respond within one business day (Monday–Friday, UK hours). For urgent queries, include your order number in the subject line.",
   },
   {
     patterns: [/account|login|register|sign up|sign in|password/i],

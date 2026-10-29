@@ -150,6 +150,35 @@ export function BundleAndSave({ peptideQty, products, actions }: { peptideQty: n
   );
 }
 
+/** Product-page bundle band: the tiers and progress, then the dedicated builder.
+    The full product list lives on /bundle-and-save, not under every product. */
+export function BundleSummary({ peptideQty }: { peptideQty: number }) {
+  return (
+    <div className="kit-builder kit-builder--summary">
+      <div className="kit-builder__intro">
+        <p className="product-eyebrow product-eyebrow--dark">Bundle &amp; save</p>
+        <h2 className="kit-builder__title">Build your own kit.</h2>
+        <p className="kit-builder__lead">
+          Mix any peptides in one order. Free items apply automatically at checkout once your kit reaches each tier.
+        </p>
+      </div>
+      <div>
+        <TierProgress peptideQty={peptideQty} tone="dark" />
+        <div className="mt-6 flex flex-wrap gap-2">
+          <Link href="/bundle-and-save" className="kit-builder__cta">
+            Open the bundle builder <ArrowUpRight size={14} aria-hidden="true" />
+          </Link>
+          {peptideQty > 0 && (
+            <Link href="/cart" className="kit-builder__link">
+              <ShoppingCart size={14} aria-hidden="true" /> Review kit · {peptideQty} vial{peptideQty === 1 ? "" : "s"}
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /** Navy kit-builder section: category filter and a scrollable grid of products to add. */
 export function KitBuilder({ peptideQty, products, actions }: { peptideQty: number; products: Product[]; actions: PickActions }) {
   const [category, setCategory] = useState("All");
@@ -157,7 +186,7 @@ export function KitBuilder({ peptideQty, products, actions }: { peptideQty: numb
   const categories = ["All", ...Array.from(new Set(products.map((p) => p.category))).sort()];
   const shown = products
     .filter((p) => (category === "All" || p.category === category) && matches(p, query))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 
   return (
     <div className="kit-builder">

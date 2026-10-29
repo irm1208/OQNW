@@ -18,7 +18,7 @@ import ResearchLiteratureModal, { type LiteratureTab } from "@/components/Resear
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getLotNumber } from "@/utils/productPurity";
-import { BundleAndSave, KitBuilder, type PickActions } from "@/components/BundleBuilder";
+import { BundleAndSave, BundleSummary, type PickActions } from "@/components/BundleBuilder";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useSEO, SITE_URL } from "@/hooks/useSEO";
@@ -314,10 +314,10 @@ export default function ProductPage() {
     !isHiddenCategory(p.category) &&
     p.stockLevel !== 0,
   );
-  // Cheapest first in the buy box, so the quickest route to the next tier leads.
+  // Compound by name, then strength ascending (5mg before 10mg).
   const bundleProducts = pickable
     .filter(p => p.id !== product.id)
-    .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
   const cartQty = (productId: string) =>
     items.find(i => i.product.id === productId)?.quantity ?? 0;
   const pickActions: PickActions = {
@@ -849,7 +849,7 @@ export default function ProductPage() {
       {/* Kit builder — pick and add products without leaving the page */}
       <section className="kit-section">
         <Container>
-          <KitBuilder peptideQty={peptideQty} products={pickable} actions={pickActions} />
+          <BundleSummary peptideQty={peptideQty} />
         </Container>
       </section>
 

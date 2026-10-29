@@ -25,14 +25,14 @@ const PILLARS = [
 const TIMELINE = [
   { icon: FlaskConical, title: "Built from a research gap", body: "Founded by researchers who struggled to source high-purity peptides with transparent documentation, not just a purity number and a price." },
   { icon: Microscope, title: "Every batch tested", body: "Our testing programme came before our first order. Every compound is independently verified, mass-confirmed and documented." },
-  { icon: Beaker, title: "81+ compounds", body: "From BPC-157 and TB-500 to GLP-1 receptor agonists, covering growth, healing, longevity, cognition and metabolic research." },
+  { icon: Beaker, title: "40+ compounds", body: "From BPC-157 and TB-500 to GLP-1 receptor agonists, covering growth, healing, longevity, cognition and metabolic research." },
   { icon: Globe, title: "Trusted worldwide", body: "Supplying researchers in 40+ countries, with support that understands the science behind the compounds we sell." },
 ];
 
 const VALUES = [
   "Publish independent Janoshik reports, with no selective disclosure",
   "Never overstate efficacy claims beyond peer-reviewed data",
-  "Respond to support queries within 1–2 business days",
+  "Respond to support queries within one business day",
   "Retest batches that fall below our purity threshold",
 ];
 
@@ -271,7 +271,7 @@ export default function AboutPage() {
             <div className="max-w-xl">
               <h2 className="font-bold tracking-tight" style={{ fontSize: "clamp(32px, 3.6vw, 51px)", lineHeight: 0.98 }}>Ready to order?</h2>
               <p className="mt-5 text-[16px] leading-relaxed" style={{ color: "rgba(255,255,255,0.8)" }}>
-                Browse our full catalogue of 81+ verified peptides, review published Janoshik reports and check out in your preferred currency.
+                Browse our full catalogue of 40+ verified compounds, review published Janoshik reports and check out in your preferred currency.
               </p>
               <p className="mt-4 text-[12px]" style={{ color: "rgba(255,255,255,0.55)" }}>
                 Supplied strictly for in-vitro laboratory research use only. Not for human or veterinary use. Must be 18+ and a qualified researcher to purchase.
