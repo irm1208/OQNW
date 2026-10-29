@@ -350,6 +350,11 @@ export default function ProductPage() {
     ["Solubility", detail.solubility],
     ["Storage", detail.storage],
   ];
+  const literatureLinks = [
+    { label: "PubChem", desc: "Chemical structure, identifiers and properties", href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(currentBase)}` },
+    { label: "PubMed", desc: "Peer-reviewed research mentioning this compound", href: `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(currentBase)}` },
+    ...(detail.casNumber ? [{ label: "CAS number", desc: `${detail.casNumber} — search this registry number`, href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(detail.casNumber)}` }] : []),
+  ];
   const specs = specRows.filter((r): r is [string, string, boolean?] => !!r[1]);
   const soldOut = product.stockLevel === 0;
   const lowStock = !soldOut && product.stockLevel !== undefined && product.stockLevel <= 10;
@@ -694,7 +699,7 @@ export default function ProductPage() {
       {/* Specifications — navy section, sheet styled as the vial label */}
       {specs.length > 0 && (
         <section id="specifications" className="p-section spec-section" style={{ scrollMarginTop: 150 }}>
-          <Container className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+          <Container className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-0">
             <div>
               <p className="product-eyebrow product-eyebrow--dark">Analytical data</p>
               <h2 className="dark-title">Specifications,<br /><span style={{ color: "var(--range)" }}>verified.</span></h2>
@@ -712,7 +717,7 @@ export default function ProductPage() {
                 </button>
               )}
             </div>
-            <div className="vial-sheet">
+            <div className="vial-sheet lg:col-start-2 lg:row-span-2 lg:row-start-1">
               <div className="vial-sheet__band">
                 <img src="/omniqure-wordmark-white.svg" alt="OmniQure" className="vial-sheet__mark" />
                 <span className="vial-sheet__title">{product.name}</span>
@@ -730,6 +735,25 @@ export default function ProductPage() {
                 <strong>Research use only</strong>
                 <span>Not for human or veterinary use</span>
               </div>
+            </div>
+            <div className="spec-lit lg:col-start-1 lg:row-start-2">
+              <p className="spec-lit__label">Research literature</p>
+              <ul className="spec-lit__list">
+                {literatureLinks.map(l => (
+                  <li key={l.label}>
+                    <a href={l.href} target="_blank" rel="noopener noreferrer" className="spec-lit__link">
+                      <span>
+                        <span className="spec-lit__name">{l.label}</span>
+                        <span className="spec-lit__desc">{l.desc}</span>
+                      </span>
+                      <ArrowUpRight size={15} aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p className="spec-lit__note">
+                External links for research convenience only. OmniQure is not responsible for third-party content.
+              </p>
             </div>
           </Container>
         </section>
@@ -837,7 +861,8 @@ export default function ProductPage() {
         </section>
       )}
 
-      {/* Research literature */}
+      {/* Research literature: inside the specifications band when there is one */}
+      {specs.length === 0 && (
       <section className="p-section">
         <Container className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
           <div>
@@ -849,11 +874,7 @@ export default function ProductPage() {
           </div>
           <div>
             <div className="rounded-[12px] border" style={hair}>
-              {[
-                { label: "PubChem", desc: "Chemical structure, identifiers and properties", href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(currentBase)}` },
-                { label: "PubMed", desc: "Peer-reviewed research mentioning this compound", href: `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(currentBase)}` },
-                ...(detail.casNumber ? [{ label: "CAS number", desc: `${detail.casNumber} — search this registry number`, href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(detail.casNumber)}` }] : []),
-              ].map((l, i, arr) => (
+              {literatureLinks.map((l, i, arr) => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-[#F2F0EB]"
                   style={{ borderBottom: i < arr.length - 1 ? "1px solid var(--hairline)" : undefined }}>
@@ -871,6 +892,7 @@ export default function ProductPage() {
           </div>
         </Container>
       </section>
+      )}
 
       {/* Research notice */}
       <section className="border-t" style={hair}>
